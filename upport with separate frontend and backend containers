@@ -1,0 +1,224 @@
+[1mdiff --git a/DOCKER.md b/DOCKER.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..37d68e3[m
+[1m--- /dev/null[m
+[1m+++ b/DOCKER.md[m
+[36m@@ -0,0 +1,234 @@[m
+[32m+[m[32m# 🐳 Docker Setup for Number Guessing Game[m
+[32m+[m
+[32m+[m[32mThis document explains how to run the Number Guessing Game using Docker and Docker Compose.[m
+[32m+[m
+[32m+[m[32m## 📋 Prerequisites[m
+[32m+[m
+[32m+[m[32m- Docker Desktop installed and running[m
+[32m+[m[32m- Docker Compose (usually comes with Docker Desktop)[m
+[32m+[m[32m- Git (to clone the repository)[m
+[32m+[m
+[32m+[m[32m## 🚀 Quick Start[m
+[32m+[m
+[32m+[m[32m### 1. Build and Run with Docker Compose[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32m# Build and start all services[m
+[32m+[m[32mdocker-compose up --build[m
+[32m+[m
+[32m+[m[32m# Run in background[m
+[32m+[m[32mdocker-compose up -d --build[m
+[32m+[m
+[32m+[m[32m# View logs[m
+[32m+[m[32mdocker-compose logs -f[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### 2. Access the Application[m
+[32m+[m
+[32m+[m[32m- **Frontend**: http://localhost:3000[m
+[32m+[m[32m- **Backend API**: http://localhost:3001[m
+[32m+[m[32m- **Health Check**: http://localhost:3001/health[m
+[32m+[m
+[32m+[m[32m## 🏗️ Docker Architecture[m
+[32m+[m
+[32m+[m[32m```[m
+[32m+[m[32m┌─────────────────┐    ┌─────────────────┐[m
+[32m+[m[32m│   Frontend      │    │    Backend      │[m
+[32m+[m[32m│   (Port 3000)   │◄──►│   (Port 3001)   │[m
+[32m+[m[32m│                 │    │                 │[m
+[32m+[m[32m└─────────────────┘    └─────────────────┘[m
+[32m+[m[32m         │                       │[m
+[32m+[m[32m         └───────────────────────┘[m
+[32m+[m[32m                 │[m
+[32m+[m[32m         ┌─────────────────┐[m
+[32m+[m[32m         │  Docker Network │[m
+[32m+[m[32m         │  (game-network) │[m
+[32m+[m[32m         └─────────────────┘[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## 📁 Docker Files Structure[m
+[32m+[m
+[32m+[m[32m```[m
+[32m+[m[32mproject-root/[m
+[32m+[m[32m├── docker-compose.yml          # Development setup[m
+[32m+[m[32m├── docker-compose.prod.yml     # Production setup[m
+[32m+[m[32m├── frontend/[m
+[32m+[m[32m│   ├── Dockerfile             # Frontend container[m
+[32m+[m[32m│   └── .dockerignore          # Exclude files[m
+[32m+[m[32m└── backend/[m
+[32m+[m[32m    ├── Dockerfile             # Backend container[m
+[32m+[m[32m    └── .dockerignore          # Exclude files[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## 🔧 Docker Commands[m
+[32m+[m
+[32m+[m[32m### Development[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32m# Start services[m
+[32m+[m[32mdocker-compose up[m
+[32m+[m
+[32m+[m[32m# Start in background[m
+[32m+[m[32mdocker-compose up -d[m
+[32m+[m
+[32m+[m[32m# View logs[m
+[32m+[m[32mdocker-compose logs -f[m
+[32m+[m
+[32m+[m[32m# Stop services[m
+[32m+[m[32mdocker-compose down[m
+[32m+[m
+[32m+[m[32m# Rebuild and start[m
+[32m+[m[32mdocker-compose up --build[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### Production[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32m# Use production compose file[m
+[32m+[m[32mdocker-compose -f docker-compose.prod.yml up --build[m
+[32m+[m
+[32m+[m[32m# Start in background[m
+[32m+[m[32mdocker-compose -f docker-compose.prod.yml up -d --build[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### Individual Services[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32m# Start only backend[m
+[32m+[m[32mdocker-compose up backend[m
+[32m+[m
+[32m+[m[32m# Start only frontend[m
+[32m+[m[32mdocker-compose up frontend[m
+[32m+[m
+[32m+[m[32m# Rebuild specific service[m
+[32m+[m[32mdocker-compose build frontend[m
+[32m+[m[32mdocker-compose build backend[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## 🌐 Port Configuration[m
+[32m+[m
+[32m+[m[32m| Service | Container Port | Host Port | Description |[m
+[32m+[m[32m|---------|----------------|-----------|-------------|[m
+[32m+[m[32m| Frontend | 3000 | 3000 | React application |[m
+[32m+[m[32m| Backend | 3001 | 3001 | Node.js API server |[m
+[32m+[m
+[32m+[m[32m## 🔄 Environment Variables[m
+[32m+[m
+[32m+[m[32m### Frontend Container[m
+[32m+[m[32m- `NODE_ENV=production`[m
+[32m+[m[32m- `REACT_APP_SERVER_URL=http://localhost:3001`[m
+[32m+[m
+[32m+[m[32m### Backend Container[m
+[32m+[m[32m- `NODE_ENV=production`[m
+[32m+[m[32m- `PORT=3001`[m
+[32m+[m[32m- `FRONTEND_URL=http://localhost:3000`[m
+[32m+[m
+[32m+[m[32m## 📊 Health Checks[m
+[32m+[m
+[32m+[m[32mThe backend service includes health checks:[m
+[32m+[m
+[32m+[m[32m```yaml[m
+[32m+[m[32mhealthcheck:[m
+[32m+[m[32m  test: ["CMD", "curl", "-f", "http://localhost:3001/health"][m
+[32m+[m[32m  interval: 30s[m
+[32m+[m[32m  timeout: 10s[m
+[32m+[m[32m  retries: 3[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## 🚨 Troubleshooting[m
+[32m+[m
+[32m+[m[32m### Common Issues[m
+[32m+[m
+[32m+[m[32m1. **Port Already in Use**[m
+[32m+[m[32m   ```bash[m
+[32m+[m[32m   # Check what's using the port[m
+[32m+[m[32m   netstat -ano | findstr :3000[m
+[32m+[m[32m   netstat -ano | findstr :3001[m
+[32m+[m[41m   [m
+[32m+[m[32m   # Kill the process or change ports in docker-compose.yml[m
+[32m+[m[32m   ```[m
+[32m+[m
+[32m+[m[32m2. **Container Won't Start**[m
+[32m+[m[32m   ```bash[m
+[32m+[m[32m   # Check logs[m
+[32m+[m[32m   docker-compose logs backend[m
+[32m+[m[32m   docker-compose logs frontend[m
+[32m+[m[41m   [m
+[32m+[m[32m   # Rebuild containers[m
+[32m+[m[32m   docker-compose down[m
+[32m+[m[32m   docker-compose up --build[m
+[32m+[m[32m   ```[m
+[32m+[m
+[32m+[m[32m3. **Network Issues**[m
+[32m+[m[32m   ```bash[m
+[32m+[m[32m   # Check network[m
+[32m+[m[32m   docker network ls[m
+[32m+[m[32m   docker network inspect game-network[m
+[32m+[m[32m   ```[m
+[32m+[m
+[32m+[m[32m### Debug Commands[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32m# Enter running container[m
+[32m+[m[32mdocker exec -it number-game-backend sh[m
+[32m+[m[32mdocker exec -it number-game-frontend sh[m
+[32m+[m
+[32m+[m[32m# View container info[m
+[32m+[m[32mdocker ps[m
+[32m+[m[32mdocker inspect number-game-backend[m
+[32m+[m
+[32m+[m[32m# Check container logs[m
+[32m+[m[32mdocker logs number-game-backend[m
+[32m+[m[32mdocker logs number-game-frontend[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## 🔒 Security Considerations[m
+[32m+[m
+[32m+[m[32m- Containers run as non-root users[m
+[32m+[m[32m- Network isolation with custom bridge network[m
+[32m+[m[32m- No sensitive data in container images[m
+[32m+[m[32m- Health checks for service monitoring[m
+[32m+[m
+[32m+[m[32m## 📈 Performance Optimization[m
+[32m+[m
+[32m+[m[32m### Development[m
+[32m+[m[32m- Volume mounts for hot reloading[m
+[32m+[m[32m- Shared node_modules volumes[m
+[32m+[m[32m- Fast rebuilds with cached layers[m
+[32m+[m
+[32m+[m[32m### Production[m
+[32m+[m[32m- Multi-stage builds (can be added)[m
+[32m+[m[32m- Optimized base images[m
+[32m+[m[32m- Health checks and restart policies[m
+[32m+[m
+[32m+[m[32m## 🚀 Deployment[m
+[32m+[m
+[32m+[m[32m### Local Development[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdocker-compose up --build[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### Production[m
+[32m+[m[32m```bash[m
+[32m+[m[32mdocker-compose -f docker-compose.prod.yml up -d --build[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### Scaling (if needed)[m
+[32m+[m[32m```bash[m
+[32m+[m[32m# Scale back

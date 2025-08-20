@@ -1,0 +1,42 @@
+services:
+  # Backend Service
+  backend:
+    build: ./backend
+    container_name: number-game-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - FRONTEND_URL=http://localhost:3000
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - game-network
+    restart: unless-stopped
+
+  # Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: number-game-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_SERVER_URL=http://localhost:3001
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - game-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+networks:
+  game-network:
+    driver: bridge
+
+volumes:
+  node_modules:
