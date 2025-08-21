@@ -68,7 +68,7 @@ const GameLobby: React.FC<GameLobbyProps> = ({ onJoinGame, connectionStatus }) =
           <h4 className="font-semibold text-indigo-800 mb-2">How to Play:</h4>
           <ul className="text-sm text-indigo-700 space-y-1">
             <li>• Create a room and share the ID with friends</li>
-            <li>• Each player sets a secret number (1-100)</li>
+            <li>• Each player sets a secret 4-digit number (1000-9999)</li>
             <li>• Take turns guessing other players' numbers</li>
             <li>• First to guess correctly wins!</li>
           </ul>

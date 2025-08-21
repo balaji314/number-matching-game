@@ -99,7 +99,7 @@ function App() {
     return () => {
       newSocket.close();
     };
-  }, []);
+  }, [serverUrl]);
 
   // Focus guess input when it's the player's turn
   useEffect(() => {

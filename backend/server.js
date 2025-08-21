@@ -1,3 +1,6 @@
+// Load environment variables
+require('dotenv').config({ path: './config.env' });
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
