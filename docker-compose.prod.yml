@@ -1,16 +1,14 @@
 services:
   # Backend Service
   backend:
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
+    build: ./backend
     container_name: number-game-backend-prod
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - FRONTEND_URL=http://localhost:3000
+      - FRONTEND_URL=https://your-frontend-domain.com
     networks:
       - game-network
     restart: unless-stopped
@@ -19,18 +17,17 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
 
   # Frontend Service
   frontend:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
+    build: ./frontend
     container_name: number-game-frontend-prod
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - REACT_APP_SERVER_URL=http://localhost:3001
+      - REACT_APP_SERVER_URL=http://backend:3001
     networks:
       - game-network
     depends_on:

@@ -27,7 +27,19 @@ cd ..
 
 # Start the services
 echo "🚀 Starting services with Docker Compose..."
-docker-compose up --build
+docker-compose up --build -d
+
+echo ""
+echo "⏳ Waiting for services to start..."
+sleep 10
+
+echo ""
+echo "📊 Checking service status..."
+docker-compose ps
+
+echo ""
+echo "🔍 Checking backend health..."
+curl -s http://localhost:3001/health || echo "Backend not ready yet"
 
 echo "✅ Services started!"
 echo "🌐 Frontend: http://localhost:3000"

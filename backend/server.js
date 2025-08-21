@@ -15,7 +15,11 @@ app.use(cors({
         process.env.FRONTEND_URL || "https://your-frontend-domain.netlify.app",
         "http://localhost:3000"
       ]
-    : "http://localhost:3000",
+    : [
+        "http://localhost:3000",
+        "http://frontend:3000",
+        "http://number-game-frontend:3000"
+      ],
   credentials: true
 }));
 
@@ -29,7 +33,11 @@ const io = socketIo(server, {
           process.env.FRONTEND_URL || "https://your-frontend-domain.netlify.app",
           "http://localhost:3000"
         ]
-      : "http://localhost:3000",
+      : [
+          "http://localhost:3000",
+          "http://frontend:3000",
+          "http://number-game-frontend:3000"
+        ],
     methods: ["GET", "POST"],
     credentials: true
   }

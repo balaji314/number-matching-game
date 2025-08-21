@@ -15,6 +15,12 @@ services:
     networks:
       - game-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Frontend Service
   frontend:
@@ -24,14 +30,15 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - REACT_APP_SERVER_URL=http://localhost:3001
+      - REACT_APP_SERVER_URL=http://backend:3001
     volumes:
       - ./frontend:/app
       - /app/node_modules
     networks:
       - game-network
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     restart: unless-stopped
 
 networks:

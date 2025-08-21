@@ -2,7 +2,7 @@
 const config = {
   // Development server URL - points to backend running locally
   development: {
-    serverUrl: 'http://localhost:3001'
+    serverUrl: process.env.REACT_APP_SERVER_URL || 'http://localhost:3001'
   },
   // Production server URL - will be set via environment variable
   production: {
