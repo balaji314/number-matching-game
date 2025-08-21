@@ -99,12 +99,17 @@ function testCORS() {
 
     const req = http.request(options, (res) => {
       const corsHeader = res.headers['access-control-allow-origin'];
-      console.log('✅ CORS Check:', corsHeader ? 'CORS headers present' : 'No CORS headers');
-      resolve(corsHeader);
+      if (corsHeader && (corsHeader === '*' || corsHeader.includes('localhost:3000'))) {
+        console.log('✅ CORS Headers:', res.headers);
+        resolve(res.headers);
+      } else {
+        console.log('❌ CORS Headers missing or incorrect:', res.headers);
+        reject(new Error('CORS not configured properly'));
+      }
     });
 
     req.on('error', (error) => {
-      console.log('❌ CORS Check - Connection failed:', error.message);
+      console.log('❌ CORS Test - Connection failed:', error.message);
       reject(error);
     });
 
@@ -112,29 +117,26 @@ function testCORS() {
   });
 }
 
-// Main test function
-async function runTests() {
-  console.log('🧪 Testing Backend and Frontend Setup...\n');
-
+// Run all tests
+async function runAllTests() {
+  console.log('🧪 Testing Backend Setup...\n');
+  
   try {
     await testBackendHealth();
     await testGameStatus();
     await testCORS();
     
-    console.log('\n✅ All tests passed! Your setup is working correctly.');
-    console.log('\n📋 Next steps:');
-    console.log('1. Start the frontend: cd frontend && npm start');
-    console.log('2. Open http://localhost:3000 in your browser');
-    console.log('3. Test the game functionality');
+    console.log('\n🎉 All backend tests passed!');
+    console.log('\n📋 Backend is ready for frontend connection');
     
   } catch (error) {
-    console.log('\n❌ Some tests failed. Please check:');
-    console.log('1. Is the backend running? (cd backend && npm start)');
-    console.log('2. Is port 3001 available?');
-    console.log('3. Are all dependencies installed?');
+    console.log('\n❌ Some backend tests failed!');
+    console.log('\n🔧 Troubleshooting:');
+    console.log('1. Make sure backend is running: npm start');
+    console.log('2. Check if port 3001 is available');
+    console.log('3. Check console logs for errors');
     console.log('\nError:', error.message);
   }
 }
 
-// Run tests
-runTests();
+runAllTests();

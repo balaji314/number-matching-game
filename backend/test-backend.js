@@ -98,11 +98,11 @@ async function runTests() {
     console.log('3. Test the game functionality');
     
   } catch (error) {
-    console.log('\n❌ Backend tests failed!');
+    console.log('\n❌ Some tests failed!');
     console.log('\n🔧 Troubleshooting:');
-    console.log('1. Check if backend is running: cd backend && npm start');
+    console.log('1. Make sure backend is running: npm start');
     console.log('2. Check if port 3001 is available');
-    console.log('3. Check backend logs for errors');
+    console.log('3. Check console logs for errors');
     console.log('\nError:', error.message);
   }
 }
