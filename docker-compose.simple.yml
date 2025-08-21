@@ -1,9 +1,7 @@
 services:
   # Backend Service
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
+    build: ./backend
     container_name: number-game-backend
     ports:
       - "3001:3001"
@@ -17,14 +15,11 @@ services:
     networks:
       - game-network
     restart: unless-stopped
-    stdin_open: true
-    tty: true
+    command: npm run dev
 
   # Frontend Service
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
+    build: ./frontend
     container_name: number-game-frontend
     ports:
       - "3000:3000"
@@ -41,8 +36,7 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-    stdin_open: true
-    tty: true
+    command: npm start
 
 networks:
   game-network:

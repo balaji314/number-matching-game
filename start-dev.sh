@@ -27,7 +27,8 @@ cd ..
 
 # Start the services
 echo "🚀 Starting services with Docker Compose..."
-docker-compose up --build -d
+echo "Using simple configuration for better reliability..."
+docker-compose -f docker-compose.simple.yml up --build -d
 
 echo ""
 echo "⏳ Waiting for services to start..."
