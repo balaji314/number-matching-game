@@ -1,5 +1,5 @@
 // Load environment variables
-require('dotenv').config({ path: './config.env' });
+require('dotenv').config({ path: process.env.NODE_ENV === 'production' ? '.env' : './config.env' });
 
 const express = require('express');
 const http = require('http');
@@ -344,7 +344,19 @@ io.on('connection', (socket) => {
 
 // Start server
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Available games: ${games.size}`);
+const HOST = process.env.HOST || '0.0.0.0';
+
+server.listen(PORT, HOST, () => {
+  console.log(`🚀 Server running on ${HOST}:${PORT}`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🎮 Available games: ${games.size}`);
+  console.log(`🌐 Health check: http://${HOST}:${PORT}/health`);
+}).on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use. Please try a different port.`);
+    process.exit(1);
+  } else {
+    console.error('❌ Server error:', error);
+    process.exit(1);
+  }
 });
