@@ -1,7 +1,9 @@
 services:
   # Backend Service
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
     container_name: number-game-backend
     ports:
       - "3001:3001"
@@ -15,16 +17,12 @@ services:
     networks:
       - game-network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
   # Frontend Service
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     container_name: number-game-frontend
     ports:
       - "3000:3000"
@@ -37,8 +35,7 @@ services:
     networks:
       - game-network
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     restart: unless-stopped
 
 networks:
