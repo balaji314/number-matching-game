@@ -4,6 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  REACT_APP_SERVER_URL = "https://number-game-backend-o9yu.onrender.com"
 
 [[redirects]]
   from = "/*"
