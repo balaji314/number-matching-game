@@ -1,12 +1,12 @@
 // Configuration for different environments
 const config = {
-  // Development server URL - points to backend running locally
+  // Development server URL - points to deployed backend
   development: {
-    serverUrl: process.env.REACT_APP_SERVER_URL || 'http://localhost:3001'
+    serverUrl: process.env.REACT_APP_SERVER_URL || 'https://number-game-backend-o9yu.onrender.com'
   },
   // Production server URL - will be set via environment variable
   production: {
-    serverUrl: process.env.REACT_APP_SERVER_URL || 'https://your-backend-domain.com'
+    serverUrl: process.env.REACT_APP_SERVER_URL || 'https://number-game-backend-o9yu.onrender.com'
   }
 };
 
